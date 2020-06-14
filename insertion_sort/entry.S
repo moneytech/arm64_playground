@@ -43,7 +43,7 @@ entry:
             --Lower  Address--
         */
         mov     w1, #0
-        str     w1, [sp, #4]            //Store num_len in ((int *)sp)[1]
+        str     w1, [sp, #4]            // Store num_len in ((int *)sp)[1]
         b       read_number
 
 save_number:
@@ -93,35 +93,35 @@ scanf_returned_zero:
 /*
 Procedure sort_nums(int *nums, int nums_len) (insertion sort)
 */
-//clobbers: x0,x1,x2,x3,x4,x5,x6
+                                        // clobbers: x0,x1,x2,x3,x4,x5,x6
 sort_nums:
-        stp     x29, x30, [sp, #-16]!       // Save LR and FP
+        stp     x29, x30, [sp, #-16]!   // Save LR and FP
                                         // x0 = nums
-        add     x1, x0, x1, lsl 2           // x1 = nums_end
-        mov     x2, x0                      // x2 = nums + i, (i = 0)
+        add     x1, x0, x1, lsl 2       // x1 = nums_end
+        mov     x2, x0                  // x2 = nums + i, (i = 0)
 0:
-        add     x2, x2, 4                   // i++
-        cmp     x2, x1                      // nums+i >= nums_end ? break
+        add     x2, x2, 4               // i++
+        cmp     x2, x1                  // nums+i >= nums_end ? break
         bhs     1f
-        ldr     w3, [x2, #-4]               // w3: loaded nums[i - 1]
-        ldr     w4, [x2]                    // w4: loaded nums[i]
+        ldr     w3, [x2, #-4]           // w3: loaded nums[i - 1]
+        ldr     w4, [x2]                // w4: loaded nums[i]
         cmp     w4, w3
-        bge     0b                          // nums[i] >= nums[i - 1] ? loop i
+        bge     0b                      // nums[i] >= nums[i - 1] ? loop i
                                         // here nums[i] < nums[i - 1]
-        mov     x5, x2                      // x5 = nums + i  (j = i)
+        mov     x5, x2                  // x5 = nums + i  (j = i)
 2:
-        ldr     w6, [x5, #-4]!              // w6 = nums[--j]
+        ldr     w6, [x5, #-4]!          // w6 = nums[--j]
         cmp     w4, w6 
-        bge     3f                          // nums[i] >= nums[j-1] ? break
-        str     w6, [x5, #4]                // nums[j+1] = nums[j]
+        bge     3f                      // nums[i] >= nums[j-1] ? break
+        str     w6, [x5, #4]            // nums[j+1] = nums[j]
         cmp     x5, x0
-        bhi     2b                          // j > 0 ? loop j
+        bhi     2b                      // j > 0 ? loop j
         sub     x5, x5, #4
 3:                                      // end j loop
-        str     w4, [x5, #4]                // nums[j] = v
-        b       0b                          // loop
+        str     w4, [x5, #4]            // nums[j] = v
+        b       0b                      // loop
 1:
-        ldp     x29, x30, [sp], #16         // Restore LR and FP
+        ldp     x29, x30, [sp], #16     // Restore LR and FP
         ret
 .size   sort_nums, (. - sort_nums)
 .type   sort_nums, %function
@@ -143,8 +143,8 @@ print_nums:
         subs    w20, w20, 1
         bhi     0b                      // jmp if (--nums_len > 1)
 1:
-        ldp     x19, x20, [sp], #16      // Restore x19 and x20
-        ldp     x29, x30, [sp], #16      // Restore FP and LR
+        ldp     x19, x20, [sp], #16     // Restore x19 and x20
+        ldp     x29, x30, [sp], #16     // Restore FP and LR
         ret
 .size   print_nums, (. - print_nums)
 .type   print_nums, %function
